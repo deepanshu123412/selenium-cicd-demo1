@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/deepanshu123412/selenium-cicd-demo.git'
+                git branch: 'main', url: 'https://github.com/deepanshu123412/selenium-cicd-demo.git'
             }
         }
 
@@ -18,6 +18,24 @@ pipeline {
             steps {
                 bat 'mvn test'
             }
+        }
+
+        stage('Publish Test Results') {
+            steps {
+                junit '**/target/surefire-reports/*.xml'
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline completed.'
+        }
+        success {
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            echo 'Pipeline failed!'
         }
     }
 }
