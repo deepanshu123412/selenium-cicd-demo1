@@ -2,40 +2,33 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/deepanshu123412/selenium-cicd-demo.git'
+                git 'https://github.com/deepanshu123412/selenium-sample.git'
             }
         }
-
-        stage('Build') {
+        stage('Build and Run Tests') {
             steps {
-                bat 'mvn clean compile'
+                bat 'mvn clean test'
             }
         }
-
-        stage('Run Tests') {
+        stage('Publish Report') {
             steps {
-                bat 'mvn test'
-            }
-        }
-
-        stage('Publish Test Results') {
-            steps {
-                junit '**/target/surefire-reports/*.xml'
+                archiveArtifacts artifacts: '**/ExtentReports/*.html', allowEmptyArchive: true
             }
         }
     }
 
     post {
-        always {
-            echo 'Pipeline completed.'
-        }
         success {
-            echo 'Pipeline succeeded!'
+            mail to: 'deepanshu821@gmail.com',
+                 subject: "Build Successful",
+                 body: "Tests ran successfully. Please check the attached Extent Report."
         }
         failure {
-            echo 'Pipeline failed!'
+            mail to: 'deepanshu821@gmail.com',
+                 subject: "Build Failed",
+                 body: "Tests failed. Check Jenkins for details."
         }
     }
 }
