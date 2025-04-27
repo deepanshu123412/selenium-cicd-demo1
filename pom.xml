@@ -27,6 +27,14 @@
             <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Add Lombok Dependency -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.24</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -39,6 +47,8 @@
                     <includes>
                         <include>**/*Test.java</include> <!-- Include all Test classes -->
                     </includes>
+                    <!-- Add the JVM option to resolve Lombok issue -->
+                    <argLine>--add-opens=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</argLine>
                 </configuration>
             </plugin>
         </plugins>
