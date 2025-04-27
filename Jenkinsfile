@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git 'https://github.com/deepanshu123412/selenium-cicd-demo1.git'
+                git branch: 'main',url: 'https://github.com/deepanshu123412/selenium-cicd-demo1.git'
             }
         }
         stage('Build and Run Tests') {
